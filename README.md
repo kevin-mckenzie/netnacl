@@ -51,7 +51,6 @@ Include the main header:
 ### Types
 
 - `netnacl_t`: Opaque context for encrypted communication.
-- `hdr_t`: Internal message header structure.
 
 ### Main Functions
 
@@ -67,28 +66,28 @@ Allocates and initializes a context for a socket. Required for all further encry
 ```c
 int netnacl_wrap(netnacl_t *p_nn);
 ```
-Performs key exchange and derives a shared symmetric key. Must be called before sending or receiving encrypted messages.
+Performs key exchange and derives a shared symmetric key. Must be called before sending or receiving encrypted messages. If the underlying socket is non-blocking a send() would have blocked, NN_WANT_WRITE is returned. If the underlying socket is non-blocking and recv() would have blocked, NN_WANT_READ is returned.
 
 #### 3. Receiving Messages
 
 ```c
 ssize_t netnacl_recv(netnacl_t *p_nn, uint8_t *buf, size_t len, int flags);
 ```
-Receives and decrypts a message from the socket. Handles partial reads, header parsing, ciphertext reception, decryption, and buffering. Returns up to `len` bytes of plaintext.
+Receives and decrypts a message from the socket. Handles partial reads, header parsing, ciphertext reception, decryption, and buffering. Returns up to `len` bytes of plaintext. If the underlying socket is non-blocking and recv() would have blocked, NN_WANT_READ is returned.
 
 #### 4. Sending Messages
 
 ```c
 ssize_t netnacl_send(netnacl_t *p_nn, const uint8_t *buf, size_t len, int flags);
 ```
-Encrypts and sends a message over the socket. Handles buffering and partial writes. Resets internal state after a full message is sent.
+Encrypts and sends a message over the socket. Handles buffering and partial writes. Resets internal state after a full message is sent. If the underlying socket is non-blocking a send() would have blocked, NN_WANT_WRITE is returned.
 
 #### 5. Random Bytes
 
 ```c
 void randombytes(uint8_t *buf, uint64_t sz);
 ```
-Fills a buffer with cryptographically secure random bytes.
+Fills a buffer with cryptographically secure random bytes. Implementation required by TweetNaCl.
 
 ---
 
@@ -135,17 +134,9 @@ free(ctx);
 
 ---
 
-## Security Notes
-
-- Uses Curve25519 for key exchange, XSalsa20 for encryption, Poly1305 for authentication.
-- All cryptographic operations are performed using TweetNaCl.
-- Always call `netnacl_wrap()` before sending or receiving encrypted messages.
-
----
-
 ## License
 
-MIT License. See LICENSE.
+GPL 3 License. See LICENSE.
 
 ---
 
