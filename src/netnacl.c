@@ -22,6 +22,14 @@
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
+#define ASSERT_RET(condition)                                                                                          \
+    do {                                                                                                               \
+        if (!(condition)) {                                                                                            \
+            assert(condition);                                                                                         \
+            return -1;                                                                                                 \
+        }                                                                                                              \
+    } while (0)
+
 typedef struct {
     uint16_t len;
     uint8_t nonce[crypto_box_NONCEBYTES];
