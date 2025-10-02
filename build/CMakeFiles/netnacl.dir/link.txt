@@ -1,0 +1,2 @@
+/usr/bin/ar qc libnetnacl.a CMakeFiles/netnacl.dir/src/netnacl.c.o CMakeFiles/netnacl.dir/src/tweetnacl.c.o
+/usr/bin/ranlib libnetnacl.a

@@ -1,0 +1,3 @@
+/home/user/git/netnacl/build/CMakeFiles/netnacl.dir
+/home/user/git/netnacl/build/CMakeFiles/edit_cache.dir
+/home/user/git/netnacl/build/CMakeFiles/rebuild_cache.dir
